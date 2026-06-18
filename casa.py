@@ -1,46 +1,218 @@
 import glfw
 from OpenGL.GL import *
+import numpy as np
+import ctypes
 
+vertices_telhado = [
+    [-0.65, -0.05],
+    [-0.15, -0.05],
+    [-0.40,  0.22]
+]
+
+verticesCasa = [
+    [-0.6, -0.45],
+    [-0.2, -0.45],
+    [-0.2, -0.05],
+    [-0.6, -0.05]
+]
+
+vertices_porta = [
+    [-0.46, -0.45],
+    [-0.34, -0.45],
+    [-0.34, -0.20],
+    [-0.46, -0.20]
+]
+
+vertices_chao = [
+    [-1.00, -1.00],
+    [ 1.00, -1.00],
+    [ 1.00, -0.45],
+    [-1.00, -0.45]
+]
+
+
+qtdVerticesChao = len(vertices_chao)  # Quantidade total de vértices do chão
+vaoIdChao = 0  # Variável global que guardará o identificador do VBA do chão
+qtdVerticesCasa = len(verticesCasa)  # Quantidade total de vértices da casa
+vaoIdCasa = 0  # Variável global que guardará o identificador do VBA da casa
+qtdVerticesTelhado = len(vertices_telhado)  # Quantidade total de vértices do telhado
+vaoIdTelhado = 0  # Variável global que guardará o identificador do
+qtdVerticesPorta = len(vertices_porta)  # Quantidade total de vértices da porta
+vaoIdPorta = 0  # Variável global que guardará o identificador do
+
+def init_chao():
+    global vertices_chao, vaoIdChao
+
+    vertices_chao = np.array(vertices_chao, np.dtype(np.float32))  # Converte a lista de vértices para um array NumPy de float32
+
+    # ===================== CRIAÇÃO DO VBA DO CHÃO =====================
+    vaoIdChao = glGenVertexArrays(1)  # Gera um identificador para o VBA (Vertex Array Object) do chão
+    glBindVertexArray(vaoIdChao)  # Ativa o VBA do chão. Tudo configurado agora ficará "guardado" nele
+
+    # ===================== CRIAÇÃO DO VBO DO CHÃO =====================
+    vboIdChao = glGenBuffers(1)  # Gera um identificador para o VBO (Vertex Buffer Object) do chão
+    glBindBuffer(GL_ARRAY_BUFFER, vboIdChao)  # Torna o VBO do chão o buffer ativo do tipo ARRAY_BUFFER
+
+    # Envia os dados dos vértices do chão para a memória da GPU
+    glBufferData(GL_ARRAY_BUFFER,
+                 vertices_chao.nbytes,
+                 vertices_chao,
+                 GL_STATIC_DRAW)
+
+    # Diz ao OpenGL como interpretar os dados dentro do VBO do chão
+    glVertexAttribPointer(
+        0,
+        2,
+        GL_FLOAT,
+        GL_FALSE,
+        2 * 4,
+        ctypes.c_void_p(0)
+    )
+
+    glEnableVertexAttribArray(0)  # Habilita o atributo de posição (índice 0) para o chão
+
+    # Desativa o VBO e VBA após configurar
+    glBindBuffer(GL_ARRAY_BUFFER, 0)
+    glBindVertexArray(0)
+
+def init_casa():
+    global verticesCasa, vaoIdCasa
+
+    verticesCasa = np.array(verticesCasa, np.dtype(np.float32))  # Converte a lista de vértices da casa para um array NumPy de float32
+
+    # ===================== CRIAÇÃO DO VBA DA CASA =====================
+    vaoIdCasa = glGenVertexArrays(1)  # Gera um identificador para o VBA (Vertex Array Object) da casa
+    glBindVertexArray(vaoIdCasa)  # Ativa o VBA da casa. Tudo configurado agora ficará "guardado" nele
+
+    # ===================== CRIAÇÃO DO VBO DA CASA =====================
+    vboIdCasa = glGenBuffers(1)  # Gera um identificador para o VBO (Vertex Buffer Object) da casa
+    glBindBuffer(GL_ARRAY_BUFFER, vboIdCasa)  # Torna o VBO da casa o buffer ativo do tipo ARRAY_BUFFER
+
+    # Envia os dados dos vértices da casa para a memória da GPU
+    glBufferData(GL_ARRAY_BUFFER,
+                 verticesCasa.nbytes,
+                 verticesCasa,
+                 GL_STATIC_DRAW)
+
+    # Diz ao OpenGL como interpretar os dados dentro do VBO da casa
+    glVertexAttribPointer(
+        0,
+        2,
+        GL_FLOAT,
+        GL_FALSE,
+        2 * 4,
+        ctypes.c_void_p(0)
+    )
+
+    glEnableVertexAttribArray(0)  # Habilita o atributo de posição (índice 0) para a casa
+
+    # Desativa o VBO e VBA após configurar
+    glBindBuffer(GL_ARRAY_BUFFER, 0)
+    glBindVertexArray(0)
+    
+def init_telhado():
+    global vertices_telhado, vaoIdTelhado
+
+    vertices_telhado = np.array(vertices_telhado, np.dtype(np.float32))  # Converte a lista de vértices do telhado para um array NumPy de float32
+
+    # ===================== CRIAÇÃO DO VBA DO TELHADO =====================
+    vaoIdTelhado = glGenVertexArrays(1)  # Gera um identificador para o VBA (Vertex Array Object) do telhado
+    glBindVertexArray(vaoIdTelhado)  # Ativa o VBA do telhado. Tudo configurado agora ficará "guardado" nele
+
+    # ===================== CRIAÇÃO DO VBO DO TELHADO =====================
+    vboIdTelhado = glGenBuffers(1)  # Gera um identificador para o VBO (Vertex Buffer Object) do telhado
+    glBindBuffer(GL_ARRAY_BUFFER, vboIdTelhado)  # Torna o VBO do telhado o buffer ativo do tipo ARRAY_BUFFER
+
+    # Envia os dados dos vértices do telhado para a memória da GPU
+    glBufferData(GL_ARRAY_BUFFER,
+                 vertices_telhado.nbytes,
+                 vertices_telhado,
+                 GL_STATIC_DRAW)
+
+    # Diz ao OpenGL como interpretar os dados dentro do VBO do telhado
+    glVertexAttribPointer(
+        0,
+        2,
+        GL_FLOAT,
+        GL_FALSE,
+        2 * 4,
+        ctypes.c_void_p(0)
+    )
+
+    glEnableVertexAttribArray(0)  # Habilita o atributo de posição (índice 0) para o telhado
+
+    # Desativa o VBO e VBA após configurar
+    glBindBuffer(GL_ARRAY_BUFFER, 0)
+    glBindVertexArray(0)
+
+def init_porta():
+    global vertices_porta, vaoIdPorta
+
+    vertices_porta = np.array(vertices_porta, np.dtype(np.float32))  # Converte a lista de vértices da porta para um array NumPy de float32
+
+    # ===================== CRIAÇÃO DO VBA DA PORTA =====================
+    vaoIdPorta = glGenVertexArrays(1)  # Gera um identificador para o VBA (Vertex Array Object) da porta
+    glBindVertexArray(vaoIdPorta)  # Ativa o VBA da porta. Tudo configurado agora ficará "guardado" nele
+
+    # ===================== CRIAÇÃO DO VBO DA PORTA =====================
+    vboIdPorta = glGenBuffers(1)  # Gera um identificador para o VBO (Vertex Buffer Object) da porta
+    glBindBuffer(GL_ARRAY_BUFFER, vboIdPorta)  # Torna o VBO da porta o buffer ativo do tipo ARRAY_BUFFER
+
+    # Envia os dados dos vértices da porta para a memória da GPU
+    glBufferData(GL_ARRAY_BUFFER,
+                 vertices_porta.nbytes,
+                 vertices_porta,
+                 GL_STATIC_DRAW)
+
+    # Diz ao OpenGL como interpretar os dados dentro do VBO da porta
+    glVertexAttribPointer(
+        0,
+        2,
+        GL_FLOAT,
+        GL_FALSE,
+        2 * 4,
+        ctypes.c_void_p(0)
+    )
+
+    glEnableVertexAttribArray(0)  # Habilita o atributo de posição (índice 0) para a porta
+
+    # Desativa o VBO e VBA após configurar
+    glBindBuffer(GL_ARRAY_BUFFER, 0)
+    glBindVertexArray(0)
+
+def desenhar_porta():
+    glColor3f(0.35, 0.2, 0.1) # Criar cor RGB
+    glBindVertexArray(vaoIdPorta) # Ativa o VBA da porta para desenhá-la
+    glDrawArrays(GL_QUADS, 0, qtdVerticesPorta) # Desenha os vértices da porta como quadriláteros
+    glBindVertexArray(0) # Desativa o VBA da porta após desenhá-la
+    
 def desenhar_casa():
     glColor3f(0.85, 0.55, 0.35) # Criar cor RGB
-    glBegin(GL_QUADS)
-    glVertex2f(-0.6, -0.45)
-    glVertex2f(-0.2, -0.45)
-    glVertex2f(-0.2, -0.05)
-    glVertex2f(-0.6, -0.05)
-    glEnd()
-    
+    glBindVertexArray(vaoIdCasa) # Ativa o VBA da casa para desenhá-la
+    glDrawArrays(GL_QUADS, 0, qtdVerticesCasa) # Desenha os vértices da casa como quadriláteros
+    glBindVertexArray(0) # Desativa o VBA da casa após desenhá-la
+
+def desenhar_telhado():
     glColor3f(0.35, 0.2, 0.1) # Criar cor RGB
-    glBegin(GL_QUADS)
-    glVertex2f(-0.46, -0.45)
-    glVertex2f(-0.34, -0.45)
-    glVertex2f(-0.34, -0.2)
-    glVertex2f(-0.46, -0.2)
-    glEnd()
-    
-    glColor3f(0.35, 0.2, 0.1) # Criar cor RGB
-    glBegin(GL_TRIANGLES)
-    glVertex2f(-0.65, -0.05)
-    glVertex2f(-0.15, -0.05)
-    glVertex2f(-0.40,  0.22)
-    glEnd()
+    glBindVertexArray(vaoIdTelhado) # Ativa o VBA do telhado para desenhá-lo
+    glDrawArrays(GL_TRIANGLES, 0, qtdVerticesTelhado) # Desenha os vértices do telhado como triângulos
+    glBindVertexArray(0) # Desativa o VBA do telhado após desenhá-lo
     
 def desenhar_chao():
     glColor3f(0.25, 0.60, 0.25) # Criar cor RGB
-    glBegin(GL_QUADS)
-    glVertex2f(-1.0, -1.0)
-    glVertex2f( 1.0, -1.0)
-    glVertex2f( 1.0, -0.45)
-    glVertex2f(-1.0, -0.45)
-    glEnd()
+    glBindVertexArray(vaoIdChao) # Ativa o VBA do chão para desenhá-lo
+    glDrawArrays(GL_QUADS, 0, qtdVerticesChao) # Desenha os vértices do chão como quadriláteros
+    glBindVertexArray(0) # Desativa o VBA do chão após desenhá-lo
     
 def display():
     glClearColor(1, 1, 0, 1.0)
     glClear(GL_COLOR_BUFFER_BIT)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity() 
-    desenhar_chao()
+    desenhar_telhado()
     desenhar_casa()
+    desenhar_porta()
+    desenhar_chao()
     
 def main():
     if not glfw.init():
@@ -53,6 +225,10 @@ def main():
         raise RuntimeError("Não foi possível criar a janela")
     
     glfw.make_context_current(window)
+    init_telhado()
+    init_casa()
+    init_porta()
+    init_chao()
     
     while not glfw.window_should_close(window):
         glfw.poll_events()
