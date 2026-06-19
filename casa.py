@@ -5,32 +5,31 @@ import ctypes
 import glfw
 
 vertices_telhado = [
-    [-0.65, -0.05],
-    [-0.15, -0.05],
-    [-0.40,  0.22]
+    [-0.65, -0.05, 1.00, 0.00, 0.00],
+    [-0.15, -0.05, 0.00, 1.00, 0.00],
+    [-0.40,  0.22, 0.00, 0.00, 1.00]
 ]
 
 verticesCasa = [
-    [-0.6, -0.45],
-    [-0.2, -0.45],
-    [-0.2, -0.05],
-    [-0.6, -0.05]
+    [-0.6, -0.45, 0.85, 0.55, 0.35],
+    [-0.2, -0.45, 0.85, 0.55, 0.35],
+    [-0.2, -0.05, 0.85, 0.55, 0.35],
+    [-0.6, -0.05, 0.85, 0.55, 0.35]
 ]
 
 vertices_porta = [
-    [-0.46, -0.45],
-    [-0.34, -0.45],
-    [-0.34, -0.20],
-    [-0.46, -0.20]
+    [-0.46, -0.45, 0.35, 0.2, 0.1],
+    [-0.34, -0.45, 0.35, 0.2, 0.1],
+    [-0.34, -0.20, 0.35, 0.2, 0.1],
+    [-0.46, -0.20, 0.35, 0.2, 0.1]
 ]
 
 vertices_chao = [
-    [-1.00, -1.00],
-    [ 1.00, -1.00],
-    [ 1.00, -0.45],
-    [-1.00, -0.45]
+    [-1.00, -1.00, 0.25, 0.60, 0.25],
+    [ 1.00, -1.00, 0.25, 0.60, 0.25],
+    [ 1.00, -0.45, 0.25, 0.60, 0.25],
+    [-1.00, -0.45, 0.25, 0.60, 0.25]
 ]
-
 
 qtdVerticesChao = len(vertices_chao)  # Quantidade total de vértices do chão
 vaoIdChao = 0  # Variável global que guardará o identificador do VAO do chão
@@ -57,22 +56,14 @@ def init_chao():
     glBindBuffer(GL_ARRAY_BUFFER, vboIdChao)  # Torna o VBO do chão o buffer ativo do tipo ARRAY_BUFFER
 
     # Envia os dados dos vértices do chão para a memória da GPU
-    glBufferData(GL_ARRAY_BUFFER,
-                 vertices_chao.nbytes,
-                 vertices_chao,
-                 GL_STATIC_DRAW)
+    glBufferData(GL_ARRAY_BUFFER,vertices_chao.nbytes,vertices_chao,GL_STATIC_DRAW)
 
     # Diz ao OpenGL como interpretar os dados dentro do VBO do chão
-    glVertexAttribPointer(
-        0,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        2 * 4,
-        ctypes.c_void_p(0)
-    )
-
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * 4, ctypes.c_void_p(0))
     glEnableVertexAttribArray(0)  # Habilita o atributo de posição (índice 0) para o chão
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * 4, ctypes.c_void_p(2 * 4))
+    glEnableVertexAttribArray(1)  # Habilita o atributo de cor
 
     # Desativa o VBO e VAO após configurar
     glBindBuffer(GL_ARRAY_BUFFER, 0)
@@ -92,22 +83,14 @@ def init_casa():
     glBindBuffer(GL_ARRAY_BUFFER, vboIdCasa)  # Torna o VBO da casa o buffer ativo do tipo ARRAY_BUFFER
 
     # Envia os dados dos vértices da casa para a memória da GPU
-    glBufferData(GL_ARRAY_BUFFER,
-                 verticesCasa.nbytes,
-                 verticesCasa,
-                 GL_STATIC_DRAW)
+    glBufferData(GL_ARRAY_BUFFER, verticesCasa.nbytes, verticesCasa, GL_STATIC_DRAW)
 
     # Diz ao OpenGL como interpretar os dados dentro do VBO da casa
-    glVertexAttribPointer(
-        0,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        2 * 4,
-        ctypes.c_void_p(0)
-    )
-
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * 4, ctypes.c_void_p(0))
     glEnableVertexAttribArray(0)  # Habilita o atributo de posição (índice 0) para a casa
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * 4, ctypes.c_void_p(2 * 4))
+    glEnableVertexAttribArray(1)  # Habilita o atributo de cor (índice 1) para a casa
 
     # Desativa o VBO e VAO após configurar
     glBindBuffer(GL_ARRAY_BUFFER, 0)
@@ -127,22 +110,14 @@ def init_telhado():
     glBindBuffer(GL_ARRAY_BUFFER, vboIdTelhado)  # Torna o VBO do telhado o buffer ativo do tipo ARRAY_BUFFER
 
     # Envia os dados dos vértices do telhado para a memória da GPU
-    glBufferData(GL_ARRAY_BUFFER,
-                 vertices_telhado.nbytes,
-                 vertices_telhado,
-                 GL_STATIC_DRAW)
+    glBufferData(GL_ARRAY_BUFFER, vertices_telhado.nbytes, vertices_telhado, GL_STATIC_DRAW)
 
     # Diz ao OpenGL como interpretar os dados dentro do VBO do telhado
-    glVertexAttribPointer(
-        0,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        2 * 4,
-        ctypes.c_void_p(0)
-    )
-
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * 4, ctypes.c_void_p(0))
     glEnableVertexAttribArray(0)  # Habilita o atributo de posição (índice 0) para o telhado
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * 4, ctypes.c_void_p(2 * 4))
+    glEnableVertexAttribArray(1)  # Habilita o atributo de cor (
 
     # Desativa o VBO e VAO após configurar
     glBindBuffer(GL_ARRAY_BUFFER, 0)
@@ -162,22 +137,14 @@ def init_porta():
     glBindBuffer(GL_ARRAY_BUFFER, vboIdPorta)  # Torna o VBO da porta o buffer ativo do tipo ARRAY_BUFFER
 
     # Envia os dados dos vértices da porta para a memória da GPU
-    glBufferData(GL_ARRAY_BUFFER,
-                 vertices_porta.nbytes,
-                 vertices_porta,
-                 GL_STATIC_DRAW)
+    glBufferData(GL_ARRAY_BUFFER, vertices_porta.nbytes, vertices_porta, GL_STATIC_DRAW)
 
     # Diz ao OpenGL como interpretar os dados dentro do VBO da porta
-    glVertexAttribPointer(
-        0,
-        2,
-        GL_FLOAT,
-        GL_FALSE,
-        2 * 4,
-        ctypes.c_void_p(0)
-    )
-
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * 4, ctypes.c_void_p(0))
     glEnableVertexAttribArray(0)  # Habilita o atributo de posição (índice 0) para a porta
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * 4, ctypes.c_void_p(2 * 4))
+    glEnableVertexAttribArray(1)  # Habilita o atributo de cor 
 
     # Desativa o VBO e VAO após configurar
     glBindBuffer(GL_ARRAY_BUFFER, 0)
@@ -189,19 +156,23 @@ def init_shaders():
     vertexShaderCode = """
     #version 330 core
     layout (location = 0) in vec2 position;
+    layout (location = 1) in vec3 color;
+    
+    out vec3 vertexColor; // Variável de saída para passar a cor do vértice para o fragment shader
     
     void main(){
         gl_Position = vec4(position, 0.0, 1.0);
+        vertexColor = color; // Passa a cor do vértice para o fragment shader
     }
     """
 
     fragmentShaderCode = """
     #version 330 core
-    uniform vec3 objectColor;
+    in vec3 vertexColor; // Variável de entrada para receber a cor do vértice do vertex shader
     out vec4 FragColor;
     
     void main(){
-        FragColor = vec4(objectColor, 1.0); // Cor vermelha
+        FragColor = vec4(vertexColor, 1.0);
     }
     """
     vertexShaderId = gls.compileShader(vertexShaderCode, GL_VERTEX_SHADER)  # Compila o shader de vértice
@@ -230,20 +201,13 @@ def desenhar_chao():
     glBindVertexArray(0) # Desativa o VAO do chão após desenhá-lo
     
 def display():
-    glClearColor(1, 1, 0, 1.0)
+    glClearColor(0.68, 0.85, 0.90, 1.0)
     glClear(GL_COLOR_BUFFER_BIT)
 
     glUseProgram(shaderId) # Ativa o programa de shaders para renderizar os objetos
-    glUniform3f(colorLocation, 0.35, 0.2, 0.1) # Define a cor para o telhado e porta
     desenhar_telhado()
-    
-    glUniform3f(colorLocation, 0.85, 0.55, 0.35) # Define a cor para a casa
     desenhar_casa()
-    
-    glUniform3f(colorLocation, 0.35, 0.2, 0.1) # Define a cor para a porta
     desenhar_porta()
-    
-    glUniform3f(colorLocation, 0.25, 0.60, 0.25) # Define a cor para o chão
     desenhar_chao()
     
 def main():
